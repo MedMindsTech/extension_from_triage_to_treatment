@@ -3,7 +3,7 @@ import pydicom
 import numpy as np
 import cv2
 
-input_folder = "."
+input_folder = "raw_dicom"
 output_folder = "processed_images"
 
 os.makedirs(output_folder, exist_ok=True)

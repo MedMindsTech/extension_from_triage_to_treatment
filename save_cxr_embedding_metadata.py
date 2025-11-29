@@ -2,24 +2,22 @@ import os
 import numpy as np
 import pandas as pd
 
-# Load embeddings
-embeddings = np.load("cxr_embeddings.npy")
+embeddings = np.load("cxr_embeddings.npy") # Load embeddings
 
-# Filenames in same order as extract_cxr_embeddings.py
-files = sorted([f for f in os.listdir("processed_images") if f.endswith(".png")])
 
-# Load MIMIC-CXR metadata (you must place your mimic-cxr-2.0.0.csv here)
-meta = pd.read_csv("cxr-record-list.csv.gz")
+files = sorted([f for f in os.listdir("processed_images") if f.endswith(".png")]) # Filenames in same order as extract_cxr_embeddings.py
+
+meta = pd.read_csv("cxr-record-list.csv.gz")  # Load MIMIC-CXR metadata 
 
 rows = []
 
 for file, emb in zip(files, embeddings):
-    # Remove .png to get the original DICOM UUID
-    uid = file.replace(".png", "")
+  
+    uid = file.replace(".png", "")   # Remove .png to get the original DICOM UUID
 
-    # Lookup subject_id and study_id in metadata
-    row = meta[meta["dicom_id"] == uid]
-
+    
+    row = meta[meta["dicom_id"] == uid] # Lookup subject_id and study_id in metadata
+ 
     if row.empty:
         print("Metadata not found for:", file)
         continue
@@ -28,8 +26,7 @@ for file, emb in zip(files, embeddings):
     study_id   = int(row["study_id"].values[0])
 
     rows.append([file, subject_id, study_id] + emb.tolist())
-
-# Build DataFrame
+    
 columns = ["filename", "subject_id", "study_id"] + [f"e{i}" for i in range(1024)]
 df = pd.DataFrame(rows, columns=columns)
 
