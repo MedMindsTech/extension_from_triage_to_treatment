@@ -2,7 +2,7 @@
 # Ignore virtual environment
 venv/
 
-# Ignore these unused scripts
+# Ignoring unused scripts
 inspect_metadata.py
 view_dicom.py
 
