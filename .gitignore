@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+# Ignore virtual environment
+venv/
+
+# Ignoring unused scripts
+inspect_metadata.py
+view_dicom.py
+
+=======
 # We cannot put large files to github
 data/
 *.csv
@@ -5,3 +14,4 @@ data/
 
 # And completely exclude the MIMIC demo folder as well
 data/mimiciv_demo/
+>>>>>>> 8653416761b26c96d59f60ca65adad2348fc8fb5
