@@ -94,6 +94,20 @@ def main():
         logreg.fit(X_train_scaled, y_train)
         y_proba = logreg.predict_proba(X_test_scaled)[:, 1]
 
+        # Save predictions to CSV
+        save_df = pd.DataFrame({
+            "fold": fold_idx,
+            "y_true": y_test,
+            "y_proba": y_proba
+        })
+        csv_path = os.path.join("outputs", "cv_predictions.csv")
+
+        if not os.path.exists(csv_path):
+            save_df.to_csv(csv_path, index=False)
+            #print(f"Saved predictions to {csv_path}")
+        else:
+            save_df.to_csv(csv_path, mode="a", header=False, index=False)
+
         try:
             auc = roc_auc_score(y_test, y_proba)
             log_aucs.append(auc)
