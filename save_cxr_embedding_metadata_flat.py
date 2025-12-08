@@ -54,3 +54,23 @@ print(f"Rows: {final.shape[0]}, Columns: {final.shape[1]}")
 import pandas as pd
 df = pd.read_csv("cxr_embedding_metadata.csv")
 print([c for c in df.columns if c.startswith("e")][:10])
+
+print("-----------------------------")
+import pandas as pd
+cohort = pd.read_parquet("outputs/cohort.parquet")
+print(10010867 in cohort["subject_id"].values)
+print(10020306 in cohort["subject_id"].values)
+print("-----------------------------")
+
+rep = pd.read_parquet("outputs/report_embeddings_from_mimiciv.parquet")
+print(rep[rep.subject_id == 10010867].shape)
+print(rep[rep.subject_id == 10020306].shape)
+print("-----------------------------")
+
+cxr = pd.read_csv("cxr_embedding_metadata.csv")
+print(cxr[cxr.subject_id == 10010867].shape)
+print(cxr[cxr.subject_id == 10020306].shape)
+print("-----------------------------------------sdsd----------")
+
+cohort = pd.read_parquet("outputs/cohort.parquet")
+print(cohort[cohort.subject_id == 10010867])
