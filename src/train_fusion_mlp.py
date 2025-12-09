@@ -145,6 +145,59 @@ def main(cohort, rep_emb, cxr):
 
     print("\nClassification Report:")
     print(classification_report(y_true_all, y_pred_all))
+    
+    # ---------------------------------------------------
+
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import precision_recall_curve
+
+    precision, recall, _ = precision_recall_curve(y_true_all, y_prob_all)
+
+    plt.figure(figsize=(6,5))
+    plt.plot(recall, precision, label=f"AUPRC = {auprc:.3f}")
+    plt.xlabel("Recall")
+    plt.ylabel("Precision")
+    plt.title("Precision–Recall Curve")
+    plt.legend()
+    plt.grid(alpha=0.3)
+    plt.tight_layout()
+    plt.savefig("fusion_pr_curve.png")
+    plt.show()
+
+    # ---------------------------------------------------
+
+    from sklearn.metrics import roc_curve
+
+    fpr, tpr, _ = roc_curve(y_true_all, y_prob_all)
+
+    plt.figure(figsize=(6,5))
+    plt.plot(fpr, tpr, label=f"AUROC = {auroc:.3f}")
+    plt.plot([0,1], [0,1], linestyle="--", color="gray")
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate (Recall)")
+    plt.title("ROC Curve")
+    plt.legend()
+    plt.grid(alpha=0.3)
+    plt.tight_layout()
+    plt.savefig("fusion_roc_curve.png")
+    plt.show()
+
+        
+    import seaborn as sns
+    from sklearn.metrics import confusion_matrix
+
+    cm = confusion_matrix(y_true_all, y_pred_all)
+    cm_norm = cm / cm.sum(axis=1, keepdims=True)   # normalize rows
+
+    plt.figure(figsize=(6,5))
+    sns.heatmap(cm_norm, annot=True, cmap="Blues", fmt=".2f",
+                xticklabels=["Pred 0", "Pred 1"],
+                yticklabels=["True 0", "True 1"])
+    plt.title("Normalized Confusion Matrix")
+    plt.tight_layout()
+    plt.savefig("fusion_confusion_matrix.png")
+    plt.show()
+
 
 
 if __name__ == "__main__":
